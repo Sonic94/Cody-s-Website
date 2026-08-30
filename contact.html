@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Cody's Sawmill</title>
+    <title>Contact - Cody's Sawmill</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
@@ -136,7 +136,7 @@
         .container {
             text-align: center;
             padding: 2rem;
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
             position: relative;
             z-index: 1;
@@ -201,33 +201,22 @@
             right: -15px;
         }
 
-        .story {
-            text-align: left;
-            font-size: clamp(1rem, 3vw, 1.15rem);
-            line-height: 1.9;
-            color: var(--cream);
-            opacity: 0.9;
-            animation: fadeIn 1s ease-out 1s both;
-            margin-bottom: 3rem;
-        }
-
-        .story p {
-            margin-bottom: 1.5rem;
-        }
-
-        .story strong {
-            color: var(--sawdust);
-        }
-
-        .values-grid {
+        .contact-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 3rem;
-            animation: fadeIn 1s ease-out 1.2s both;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 3rem;
+            text-align: left;
+            margin-top: 2rem;
+            animation: fadeIn 1s ease-out 1s both;
         }
 
-        .value-card {
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-card {
             background: rgba(139, 111, 71, 0.15);
             border: 1px solid rgba(212, 165, 116, 0.3);
             padding: 1.5rem;
@@ -235,25 +224,120 @@
             transition: all 0.3s ease;
         }
 
-        .value-card:hover {
+        .info-card:hover {
             background: rgba(139, 111, 71, 0.25);
             border-color: var(--sawdust);
-            transform: translateY(-4px);
+            transform: translateY(-2px);
         }
 
-        .value-card h3 {
+        .info-card h3 {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             letter-spacing: 0.1em;
             color: var(--sawdust);
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
         }
 
-        .value-card p {
+        .info-card p,
+        .info-card a {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--cream);
+            opacity: 0.9;
+            text-decoration: none;
+        }
+
+        .info-card a:hover {
+            color: var(--rust);
+            opacity: 1;
+        }
+
+        .contact-form {
+            background: rgba(44, 24, 16, 0.4);
+            border: 1px solid rgba(212, 165, 116, 0.3);
+            padding: 2rem;
+            border-radius: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-family: 'Bebas Neue', sans-serif;
             font-size: 0.95rem;
-            line-height: 1.6;
+            letter-spacing: 0.08em;
+            color: var(--sawdust);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(244, 237, 228, 0.05);
+            border: 1px solid rgba(212, 165, 116, 0.4);
+            border-radius: 3px;
+            color: var(--cream);
+            font-family: 'Crimson Text', serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--sawdust);
+            background: rgba(244, 237, 228, 0.08);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            padding: 0.85rem 2rem;
+            background: var(--rust);
+            border: 2px solid var(--rust);
+            color: var(--cream);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            border-radius: 3px;
+        }
+
+        .submit-btn:hover {
+            background: transparent;
+            color: var(--rust);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(200, 70, 48, 0.3);
+        }
+
+        .map-note {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(139, 111, 71, 0.1);
+            border: 1px dashed rgba(212, 165, 116, 0.4);
+            border-radius: 4px;
+            animation: fadeIn 1s ease-out 1.2s both;
+        }
+
+        .map-note h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--sawdust);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .map-note p {
             color: var(--cream);
             opacity: 0.85;
+            line-height: 1.7;
         }
 
         footer {
@@ -314,6 +398,13 @@
             margin-bottom: 0.5rem;
         }
 
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 1.5rem;
@@ -327,10 +418,6 @@
             .nav-btn {
                 font-size: 0.9rem;
                 padding: 0.6rem 1.2rem;
-            }
-
-            .story {
-                text-align: left;
             }
 
             footer {
@@ -358,32 +445,64 @@
 
     <main>
         <div class="container">
-            <h1>OUR STORY</h1>
-            <p class="tagline">Rooted in Craft. Built on Trust.</p>
+            <h1>GET IN TOUCH</h1>
+            <p class="tagline">We'd Love to Hear From You</p>
 
             <div class="divider"></div>
 
-            <div class="story">
-                <p>Cody's Sawmill was founded on a simple belief: <strong>quality timber starts with quality care.</strong> What began as a small family operation has grown into a trusted name for lumber and custom milling, without ever losing sight of the values we started with.</p>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="info-card">
+                        <h3>Visit Us</h3>
+                        <p>123 Timber Lane<br>Forestville, WA 98234</p>
+                    </div>
 
-                <p>Every log that comes through our yard is treated with the same respect, whether it's headed for a backyard deck or a full home build. We take pride in precision, and we take the time to get every cut right.</p>
+                    <div class="info-card">
+                        <h3>Call Us</h3>
+                        <p><a href="tel:+15551234567">(555) 123-4567</a></p>
+                    </div>
 
-                <p>Our team brings decades of combined experience to the mill floor. We've weathered storms, sharpened our craft, and built relationships with contractors, woodworkers, and homeowners who keep coming back because they know what they're getting: <strong>honest work and honest lumber.</strong></p>
+                    <div class="info-card">
+                        <h3>Email Us</h3>
+                        <p><a href="mailto:info@codyssawmill.com">info@codyssawmill.com</a></p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Business Hours</h3>
+                        <p>Monday - Friday: 7:00 AM - 5:00 PM<br>
+                        Saturday: 8:00 AM - 2:00 PM<br>
+                        Sunday: Closed</p>
+                    </div>
+                </div>
+
+                <form class="contact-form" action="https://formspree.io/f/yourFormID" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone (optional)</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
             </div>
 
-            <div class="values-grid">
-                <div class="value-card">
-                    <h3>Craftsmanship</h3>
-                    <p>Every board is cut with care and inspected for quality before it leaves our mill.</p>
-                </div>
-                <div class="value-card">
-                    <h3>Sustainability</h3>
-                    <p>We source responsibly and make the most of every log that comes through our yard.</p>
-                </div>
-                <div class="value-card">
-                    <h3>Community</h3>
-                    <p>We're proud to serve the builders and makers in our local area, one project at a time.</p>
-                </div>
+            <div class="map-note">
+                <h3>Find Us</h3>
+                <p>Add a Google Maps embed here by pasting your location's embed code, or link out to directions once your address is finalized.</p>
             </div>
         </div>
     </main>
