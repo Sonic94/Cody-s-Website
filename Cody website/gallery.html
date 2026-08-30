@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Cody's Sawmill</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --wood-dark: #2c1810;
+            --wood-medium: #5c3d2e;
+            --wood-light: #8b6f47;
+            --sawdust: #d4a574;
+            --cream: #f4ede4;
+            --rust: #c84630;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: var(--wood-dark);
+            color: var(--cream);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(44, 24, 16, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 1rem 2rem;
+            background: rgba(44, 24, 16, 0.98);
+        }
+
+        .logo-small {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.15em;
+            color: var(--sawdust);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .logo-small:hover {
+            color: var(--rust);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            padding: 0.6rem 1.2rem;
+            background: rgba(139, 111, 71, 0.2);
+            border: 2px solid var(--sawdust);
+            color: var(--sawdust);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--sawdust);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-btn:hover {
+            color: var(--wood-dark);
+            border-color: var(--rust);
+        }
+
+        .nav-btn:hover::before {
+            left: 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--wood-dark) 0%, var(--wood-medium) 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0,0,0,0.03) 2px,
+                    rgba(0,0,0,0.03) 4px
+                );
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 12vw, 6rem);
+            letter-spacing: 0.15em;
+            color: var(--sawdust);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            color: var(--cream);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.6s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--sawdust);
+            font-size: 2rem;
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        /* Gallery Sections */
+        .gallery-section {
+            position: relative;
+            padding: 8rem 2rem;
+            overflow: hidden;
+        }
+
+        .gallery-section:nth-child(even) {
+            background: linear-gradient(to bottom, var(--wood-dark), var(--wood-medium));
+        }
+
+        .gallery-section:nth-child(odd) {
+            background: var(--wood-medium);
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            letter-spacing: 0.15em;
+            color: var(--sawdust);
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--rust);
+        }
+
+        /* Parallax Image Container */
+        .parallax-container {
+            position: relative;
+            height: 600px;
+            margin-bottom: 3rem;
+            overflow: hidden;
+            border-radius: 4px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .parallax-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+            height: 120%;
+            min-width: 120%;
+            min-height: 120%;
+            background-size: cover;
+            background-position: center;
+            will-change: transform;
+        }
+
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(44, 24, 16, 0.95), transparent);
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .parallax-container:hover .image-overlay {
+            transform: translateY(0);
+        }
+
+        .image-overlay h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 0.1em;
+            color: var(--sawdust);
+            margin-bottom: 0.5rem;
+        }
+
+        .image-overlay p {
+            color: var(--cream);
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* Grid Layout */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-grid-large {
+            grid-template-columns: 1fr;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-grid-two {
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Staggered reveal animation */
+        .parallax-container {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .parallax-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Placeholder images with wood textures */
+        .img-logs {
+            background: linear-gradient(rgba(92, 61, 46, 0.7), rgba(92, 61, 46, 0.7)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect fill="%235c3d2e" width="800" height="600"/><circle fill="%238b6f47" cx="400" cy="300" r="150" opacity="0.3"/><text x="400" y="320" font-family="Arial" font-size="48" fill="%23f4ede4" text-anchor="middle">Raw Logs</text></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .img-milling {
+            background: linear-gradient(rgba(92, 61, 46, 0.7), rgba(92, 61, 46, 0.7)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect fill="%235c3d2e" width="800" height="600"/><circle fill="%238b6f47" cx="400" cy="300" r="150" opacity="0.3"/><text x="400" y="320" font-family="Arial" font-size="48" fill="%23f4ede4" text-anchor="middle">Milling Process</text></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .img-sawdust {
+            background: linear-gradient(rgba(92, 61, 46, 0.7), rgba(92, 61, 46, 0.7)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect fill="%235c3d2e" width="800" height="600"/><circle fill="%238b6f47" cx="400" cy="300" r="150" opacity="0.3"/><text x="400" y="320" font-family="Arial" font-size="48" fill="%23f4ede4" text-anchor="middle">Sawdust Detail</text></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .img-boards {
+            background: linear-gradient(rgba(92, 61, 46, 0.7), rgba(92, 61, 46, 0.7)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect fill="%235c3d2e" width="800" height="600"/><circle fill="%238b6f47" cx="400" cy="300" r="150" opacity="0.3"/><text x="400" y="320" font-family="Arial" font-size="48" fill="%23f4ede4" text-anchor="middle">Finished Boards</text></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .img-equipment {
+            background: linear-gradient(rgba(92, 61, 46, 0.7), rgba(92, 61, 46, 0.7)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect fill="%235c3d2e" width="800" height="600"/><circle fill="%238b6f47" cx="400" cy="300" r="150" opacity="0.3"/><text x="400" y="320" font-family="Arial" font-size="48" fill="%23f4ede4" text-anchor="middle">Equipment</text></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .img-workspace {
+            background: linear-gradient(rgba(92, 61, 46, 0.7), rgba(92, 61, 46, 0.7)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect fill="%235c3d2e" width="800" height="600"/><circle fill="%238b6f47" cx="400" cy="300" r="150" opacity="0.3"/><text x="400" y="320" font-family="Arial" font-size="48" fill="%23f4ede4" text-anchor="middle">Workshop</text></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Upload Instructions */
+        .upload-note {
+            background: rgba(200, 70, 48, 0.1);
+            border: 2px dashed var(--rust);
+            padding: 2rem;
+            text-align: center;
+            margin: 4rem auto;
+            max-width: 800px;
+            border-radius: 4px;
+        }
+
+        .upload-note h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--rust);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .upload-note p {
+            color: var(--cream);
+            line-height: 1.8;
+        }
+
+        .upload-note code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            color: var(--sawdust);
+            font-family: monospace;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(44, 24, 16, 0.98);
+            border-top: 1px solid rgba(212, 165, 116, 0.2);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--cream);
+            opacity: 0.7;
+        }
+
+        footer a {
+            color: var(--sawdust);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--rust);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .gallery-section {
+                padding: 4rem 1rem;
+            }
+
+            .parallax-container {
+                height: 400px;
+            }
+
+            .gallery-grid,
+            .gallery-grid-two {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <a href="codys-sawmill.html" class="logo-small">Cody's Sawmill</a>
+        <div class="nav-links">
+            <a href="codys-sawmill.html" class="nav-btn">Home</a>
+            <a href="gallery.html" class="nav-btn">Gallery</a>
+            <a href="codys-sawmill.html#contact" class="nav-btn">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Our Gallery</h1>
+            <p>Witness the craft of turning raw timber into quality lumber</p>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </section>
+
+    <section class="gallery-section">
+        <h2 class="section-title">The Raw Material</h2>
+        <div class="gallery-grid-large">
+            <div class="parallax-container" data-speed="0.15">
+                <div class="parallax-image" style="background-image: url('wood-1921820_1280.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="image-overlay">
+                    <h3>Fresh Timber</h3>
+                    <p>Premium logs sourced from sustainable forests, ready for processing</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery-section">
+        <h2 class="section-title">The Process</h2>
+        <div class="gallery-grid-two">
+            <div class="parallax-container" data-speed="0.3">
+                <div class="parallax-image" style="background-image: url('sawmill-1049779_1920.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="image-overlay">
+                    <h3>Precision Milling</h3>
+                    <p>Our state-of-the-art sawmill equipment ensures perfect cuts every time</p>
+                </div>
+            </div>
+            <div class="parallax-container" data-speed="0.4">
+                <div class="parallax-image" style="background-image: url('lt70-2025-browncoin-side-full-view-mill-only-w-log-scenic-hero_1920x1080web.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="image-overlay">
+                    <h3>Professional Equipment</h3>
+                    <p>Industrial-grade machinery maintained to the highest standards</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery-section">
+        <h2 class="section-title">The Details</h2>
+        <div class="gallery-grid">
+            <div class="parallax-container" data-speed="0.2">
+                <div class="parallax-image" style="background-image: url('nature-3583051_1280.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="image-overlay">
+                    <h3>Sawdust & Texture</h3>
+                    <p>The byproduct of quality craftsmanship</p>
+                </div>
+            </div>
+            <div class="parallax-container" data-speed="0.35">
+                <div class="parallax-image" style="background-image: url('flight-2259702_1920.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="image-overlay">
+                    <h3>Workshop Environment</h3>
+                    <p>A clean, organized space for precision work</p>
+                </div>
+            </div>
+            <div class="parallax-container" data-speed="0.25">
+                <div class="parallax-image" style="background-image: url('board-2941888_1920.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="image-overlay">
+                    <h3>Quality Control</h3>
+                    <p>Every board inspected before delivery</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery-section">
+        <h2 class="section-title">The Final Product</h2>
+        <div class="gallery-grid-large">
+            <div class="parallax-container" data-speed="0.4">
+                <div class="parallax-image" style="background-image: url('wood-877367_1920.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="image-overlay">
+                    <h3>Finished Lumber</h3>
+                    <p>Premium boards ready for your next project, from construction to fine woodworking</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Cody's Sawmill. All rights reserved. | <a href="codys-sawmill.html">Back to Home</a></p>
+    </footer>
+
+    <script>
+        // Parallax scroll effect
+        let ticking = false;
+        
+        function updateParallax() {
+            const containers = document.querySelectorAll('.parallax-container');
+            
+            containers.forEach(container => {
+                const rect = container.getBoundingClientRect();
+                const speed = parseFloat(container.dataset.speed) || 0.5;
+                
+                // Only apply parallax when element is in viewport
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const image = container.querySelector('.parallax-image');
+                    
+                    // Calculate movement based on element's position in viewport
+                    const windowHeight = window.innerHeight;
+                    const elementMiddle = rect.top + (rect.height / 2);
+                    const viewportMiddle = windowHeight / 2;
+                    const distance = elementMiddle - viewportMiddle;
+                    const movement = distance * speed;
+                    
+                    // Apply transform with centered origin
+                    image.style.transform = `translate(-50%, calc(-50% + ${movement}px))`;
+                }
+            });
+            
+            ticking = false;
+        }
+
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', requestTick);
+        
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.parallax-container, .section-title').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Initial parallax calculation
+        updateParallax();
+    </script>
+</body>
+</html>
